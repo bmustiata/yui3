@@ -102,10 +102,14 @@ VC = {
             // Use value property for performance
             newVal = domNode.value;
         } else if (nodeName === 'select') {
-            // Back-compatibility with IE6 <select> element values.
-            // Huge performance cheat to get past node.get('value').
-            selectedOption = domNode.options[domNode.selectedIndex];
-            newVal = selectedOption.value || selectedOption.text;
+            if (domNode.selectedIndex < 0) { // no selected value
+                newVal = "";
+            } else {
+                // Back-compatibility with IE6 <select> element values.
+                // Huge performance cheat to get past node.get('value').
+                selectedOption = domNode.options[domNode.selectedIndex];
+                newVal = selectedOption.value || selectedOption.text;
+            }
         }
 
         if (newVal !== prevVal) {
